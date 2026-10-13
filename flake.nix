@@ -10,13 +10,14 @@
         treefmt-nix.follows = "treefmt-nix";
       };
     };
-    saywayland = {
-      url = "github:saygo-png/saywayland";
+    sayland = {
+      url = "github:saygo-png/sayland/768dee7f0947dc9c5b54b49a1bdb94b68cc61f2f";
       inputs = {
         treefmt-nix.follows = "treefmt-nix";
         nixpkgs.follows = "nixpkgs";
         systems.follows = "systems";
         niceHaskell.follows = "niceHaskell";
+        git-hooks.follows = "";
       };
     };
     systems = {
@@ -28,7 +29,7 @@
   outputs = {
     nixpkgs,
     systems,
-    saywayland,
+    sayland,
     niceHaskell,
     treefmt-nix,
     ...
@@ -39,7 +40,7 @@
     packages = eachSystem (system: pkgs: let
       program = pkgs.callPackage ./package.nix {
         niceHaskell = niceHaskell.outputs.niceHaskell.${system};
-        inherit (saywayland.packages.${system}) saywayland;
+        inherit (sayland.packages.${system}) sayland;
       };
     in {
       "saywallpaper" = program;
@@ -53,13 +54,10 @@
         packages = let
           ghcPackages = pkgs.haskell.packages.ghc912;
         in [
-          ghcPackages.cabal-install
+          pkgs.cabal-install
           ghcPackages.ghc
           ghcPackages.haskell-language-server
         ];
-        shellHook = ''
-          export CABAL_DIR="$XDG_CONFIG_HOME/cabal"
-        '';
       };
     });
   };

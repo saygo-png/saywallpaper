@@ -1,6 +1,6 @@
 {
   niceHaskell,
-  saywayland,
+  sayland,
   ...
 }:
 niceHaskell.mkPackage {
@@ -9,6 +9,6 @@ niceHaskell.mkPackage {
   cabalName = "saywallpaper";
   compiler = "ghc912";
   developPackageArgs.overrides = _: _: {
-    saywayland = saywayland;
+    sayland = sayland;
   };
 }

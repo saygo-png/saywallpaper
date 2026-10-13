@@ -62,13 +62,14 @@
       "inputs": {
         "niceHaskell": "niceHaskell",
         "nixpkgs": "nixpkgs",
-        "saywayland": "saywayland",
+        "sayland": "sayland",
         "systems": "systems",
         "treefmt-nix": "treefmt-nix"
       }
     },
-    "saywayland": {
+    "sayland": {
       "inputs": {
+        "git-hooks": [],
         "niceHaskell": [
           "niceHaskell"
         ],
@@ -83,16 +84,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1788213613,
-        "narHash": "sha256-WuqIo0aQftLfM7YyHagOcngboSjSGDOYatvUKcNL9KU=",
+        "lastModified": 1791907199,
+        "narHash": "sha256-1KN0PSsfyKrhwAILkAue5SpNpo26QeO9+6cHytOziSw=",
         "owner": "saygo-png",
-        "repo": "saywayland",
-        "rev": "5f92b451c51ed856c4724a6425ed9a5afa036751",
+        "repo": "sayland",
+        "rev": "768dee7f0947dc9c5b54b49a1bdb94b68cc61f2f",
         "type": "github"
       },
       "original": {
         "owner": "saygo-png",
-        "repo": "saywayland",
+        "repo": "sayland",
+        "rev": "768dee7f0947dc9c5b54b49a1bdb94b68cc61f2f",
         "type": "github"
       }
     },
