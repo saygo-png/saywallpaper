@@ -12,6 +12,7 @@
     };
     sayland = {
       url = "github:saygo-png/sayland/768dee7f0947dc9c5b54b49a1bdb94b68cc61f2f";
+      flake = false;
       inputs = {
         treefmt-nix.follows = "treefmt-nix";
         nixpkgs.follows = "nixpkgs";
@@ -32,6 +33,7 @@
     sayland,
     niceHaskell,
     treefmt-nix,
+    self,
     ...
   }: let
     pkgsFor = nixpkgs.lib.genAttrs (import systems) (system: import nixpkgs {inherit system;});
@@ -40,7 +42,7 @@
     packages = eachSystem (system: pkgs: let
       program = pkgs.callPackage ./package.nix {
         niceHaskell = niceHaskell.outputs.niceHaskell.${system};
-        inherit (sayland.packages.${system}) sayland;
+        saylandSrc = sayland;
       };
     in {
       "saywallpaper" = program;
@@ -49,14 +51,15 @@
 
     formatter = eachSystem (_system: pkgs: (treefmt-nix.lib.evalModule pkgs ./treefmt.nix).config.build.wrapper);
 
-    devShells = eachSystem (_system: pkgs: {
+    devShells = eachSystem (system: pkgs: {
       default = pkgs.mkShell {
         packages = let
-          ghcPackages = pkgs.haskell.packages.ghc912;
+          hPkgs = pkgs.haskellPackages;
         in [
+          self.formatter.${system}
           pkgs.cabal-install
-          ghcPackages.ghc
-          ghcPackages.haskell-language-server
+          hPkgs.ghc
+          hPkgs.haskell-language-server
         ];
       };
     });

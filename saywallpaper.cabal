@@ -1,20 +1,50 @@
-cabal-version:   2.4
-name:            saywallpaper
-version:         0
-build-type:      Simple
-author:          saygo-png
-maintainer:      saygo-png <saygo.mail@proton.me>
-copyright:       2024 saygo-png
+cabal-version: 3.0
+name: saywallpaper
+version: 0
+build-type: Simple
+author: saygo-png
+maintainer: saygo-png <saygo.mail@proton.me>
+copyright: 2024 saygo-png
 
 common common-options
-  build-depends:    base >=4.7 && <5, relude, bytestring, network, unix, sayland, stm, containers
-  default-language: GHC2021
-  ghc-options: -Weverything -Wno-missed-extra-shared-lib -Wno-missing-kind-signatures -Wno-safe -Wno-unsafe -Wno-missing-import-lists -Wno-all-missed-specialisations -Wno-missed-specialisations -Wno-missing-safe-haskell-mode -Wno-missing-exported-signatures -Wno-missing-local-signatures -Wno-unticked-promoted-constructors
-               -threaded -rtsopts -with-rtsopts=-N
-  default-extensions: NoImplicitPrelude NoFieldSelectors OverloadedRecordDot DuplicateRecordFields BangPatterns BinaryLiterals ConstraintKinds DataKinds DefaultSignatures DeriveDataTypeable DeriveFoldable DeriveFunctor DeriveGeneric DeriveTraversable DoAndIfThenElse EmptyDataDecls ExistentialQuantification FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving InstanceSigs KindSignatures LambdaCase MultiParamTypeClasses MultiWayIf NamedFieldPuns OverloadedStrings PartialTypeSignatures PatternGuards PolyKinds RankNTypes ScopedTypeVariables StandaloneDeriving TupleSections TypeFamilies TypeSynonymInstances ViewPatterns DerivingStrategies RoleAnnotations
+  build-depends:
+    base >=4.7 && <5,
+    bytestring,
+    containers,
+    relude,
+    sayland,
+    stm,
+    unix,
+
+  default-language: GHC2024
+  ghc-options:
+    -Weverything
+    -Wno-missed-extra-shared-lib
+    -Wno-missing-kind-signatures
+    -Wno-safe
+    -Wno-unsafe
+    -Wno-missing-import-lists
+    -Wno-all-missed-specialisations
+    -Wno-missed-specialisations
+    -Wno-missing-safe-haskell-mode
+    -Wno-missing-exported-signatures
+    -Wno-missing-local-signatures
+    -Wno-unticked-promoted-constructors
+    -threaded
+    -rtsopts
+    -with-rtsopts=-N
+
+  default-extensions:
+    DuplicateRecordFields
+    MultiWayIf
+    NoFieldSelectors
+    NoImplicitPrelude
+    OverloadedRecordDot
+    OverloadedStrings
+    PartialTypeSignatures
 
 executable saywallpaper
-  import:         common-options
+  import: common-options
   hs-source-dirs: src
-  main-is:        Main.hs
+  main-is: Main.hs
   other-modules: Config
