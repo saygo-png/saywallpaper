@@ -1,22 +1,17 @@
 {
   niceHaskell,
-  saylandSrc,
+  sayland,
+  shell ? false,
   ...
-}: let
-  sayland = niceHaskell.mkPackage {
-    flags = niceHaskell.mkFlags {
-      doCheck = false;
-      doHaddock = false;
-    };
-    packageRoot = saylandSrc;
-    cabalName = "sayland";
+}:
+niceHaskell.mkPackage {
+  flags = niceHaskell.mkFlags {
+    doCheck = false;
+    returnShellEnv = shell;
   };
-in
-  niceHaskell.mkPackage {
-    flags = niceHaskell.mkFlags {doCheck = false;};
-    packageRoot = ./.;
-    cabalName = "saywallpaper";
-    developPackageArgs.overrides = _: _: {
-      inherit sayland;
-    };
-  }
+  packageRoot = ./.;
+  cabalName = "saywallpaper";
+  developPackageArgs.overrides = _: _: {
+    inherit sayland;
+  };
+}

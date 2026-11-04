@@ -13,11 +13,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792716928,
-        "narHash": "sha256-y9qTxGYZX4UJ8tCNcY5ELUcHPIgMXziulmlqWo3IrFY=",
+        "lastModified": 1793820107,
+        "narHash": "sha256-BVTB8qhvODsAz3rmzzm5rugDHcwlyv+dmqhcsjR4M0o=",
         "owner": "saygo-png",
         "repo": "nice-nixpkgs-haskell",
-        "rev": "393ae97bb7d1a7a12f2140c6594815b54b38997b",
+        "rev": "803984353d902c924e194b8907044a72758cb2ed",
         "type": "github"
       },
       "original": {
@@ -28,11 +28,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1792506237,
-        "narHash": "sha256-Q/8KLB6jNfpaUN1HAedE/u/Et9feE/zYSsutBLKrCFk=",
+        "lastModified": 1793735720,
+        "narHash": "sha256-smoxPKrzAhdGuFd2LLnG4m8P6IrZuW95DVyzjnlab7w=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5adc50831c259f87faeb09ddf930d43597197473",
+        "rev": "9d3b8db48266c17be0b5f9c6360c3ecfbac3d1f5",
         "type": "github"
       },
       "original": {
@@ -62,39 +62,24 @@
       "inputs": {
         "niceHaskell": "niceHaskell",
         "nixpkgs": "nixpkgs",
-        "sayland": "sayland",
+        "saylandSrc": "saylandSrc",
         "systems": "systems",
         "treefmt-nix": "treefmt-nix"
       }
     },
-    "sayland": {
-      "inputs": {
-        "git-hooks": [],
-        "niceHaskell": [
-          "niceHaskell"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "systems": [
-          "systems"
-        ],
-        "treefmt-nix": [
-          "treefmt-nix"
-        ]
-      },
+    "saylandSrc": {
+      "flake": false,
       "locked": {
-        "lastModified": 1791907199,
-        "narHash": "sha256-1KN0PSsfyKrhwAILkAue5SpNpo26QeO9+6cHytOziSw=",
+        "lastModified": 1793717730,
+        "narHash": "sha256-Ye5tM/EraMPdux2kO8dW9xcV1qiVkZO6bcW1ty6ByLA=",
         "owner": "saygo-png",
         "repo": "sayland",
-        "rev": "768dee7f0947dc9c5b54b49a1bdb94b68cc61f2f",
+        "rev": "ffe624cf91c4d59b7ceda5a645cfbefd9483dad6",
         "type": "github"
       },
       "original": {
         "owner": "saygo-png",
         "repo": "sayland",
-        "rev": "768dee7f0947dc9c5b54b49a1bdb94b68cc61f2f",
         "type": "github"
       }
     },

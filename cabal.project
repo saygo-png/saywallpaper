@@ -1,6 +1,1 @@
 packages: .
-
-source-repository-package
-  type: git
-  location: https://github.com/saygo-png/sayland
-  tag: 768dee7f0947dc9c5b54b49a1bdb94b68cc61f2f

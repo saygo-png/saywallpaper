@@ -10,16 +10,9 @@
         treefmt-nix.follows = "treefmt-nix";
       };
     };
-    sayland = {
-      url = "github:saygo-png/sayland/768dee7f0947dc9c5b54b49a1bdb94b68cc61f2f";
+    saylandSrc = {
+      url = "github:saygo-png/sayland";
       flake = false;
-      inputs = {
-        treefmt-nix.follows = "treefmt-nix";
-        nixpkgs.follows = "nixpkgs";
-        systems.follows = "systems";
-        niceHaskell.follows = "niceHaskell";
-        git-hooks.follows = "";
-      };
     };
     systems = {
       url = "path:./systems.nix";
@@ -30,38 +23,58 @@
   outputs = {
     nixpkgs,
     systems,
-    sayland,
-    niceHaskell,
+    saylandSrc,
     treefmt-nix,
     self,
     ...
-  }: let
+  } @ inputs: let
     pkgsFor = nixpkgs.lib.genAttrs (import systems) (system: import nixpkgs {inherit system;});
     eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f system pkgsFor.${system});
   in {
     packages = eachSystem (system: pkgs: let
-      program = pkgs.callPackage ./package.nix {
-        niceHaskell = niceHaskell.outputs.niceHaskell.${system};
-        saylandSrc = sayland;
+      niceHaskell = inputs.niceHaskell.outputs.niceHaskell.${system};
+    in rec {
+      sayland = niceHaskell.mkPackage {
+        packageRoot = saylandSrc;
+        cabalName = "sayland";
+        flags = niceHaskell.mkFlags {
+          doCheck = false;
+          doHaddock = false;
+        };
       };
-    in {
-      "saywallpaper" = program;
-      default = program;
+
+      saywallpaper = pkgs.callPackage ./package.nix {
+        inherit niceHaskell;
+        inherit sayland;
+      };
+
+      default = saywallpaper;
     });
 
     formatter = eachSystem (_system: pkgs: (treefmt-nix.lib.evalModule pkgs ./treefmt.nix).config.build.wrapper);
 
-    devShells = eachSystem (system: pkgs: {
-      default = pkgs.mkShell {
-        packages = let
-          hPkgs = pkgs.haskellPackages;
-        in [
-          self.formatter.${system}
-          pkgs.cabal-install
-          hPkgs.ghc
-          hPkgs.haskell-language-server
-        ];
-      };
-    });
+    devShells = eachSystem (
+      system: pkgs: let
+        niceHaskell = inputs.niceHaskell.outputs.niceHaskell.${system};
+        haskellShell =
+          (pkgs.callPackage ./package.nix {
+            inherit niceHaskell;
+            inherit (self.packages.${system}) sayland;
+            shell = true;
+          }).overrideAttrs (old: {
+            nativeBuildInputs =
+              old.nativeBuildInputs
+              ++ [
+                self.formatter.${system}
+                pkgs.haskellPackages.cabal-install
+                pkgs.haskellPackages.haskell-language-server
+              ];
+            buildInputs = old.buildInputs ++ [pkgs.zlib];
+          });
+      in {
+        inherit haskellShell;
+        default = haskellShell;
+      }
+    );
   };
 }

@@ -35,4 +35,5 @@ It doesn't use a Wayland library and thus might be more helpful as an example fo
 
 Build with Nix flakes: `nix build`
 
-Build using Cabal: `cabal build`
+Build using Cabal inside the dev shell (`nix develop`, or direnv): `cabal build`.
+The shell provides all Haskell dependencies, including sayland, so Cabal doesn't fetch anything.
