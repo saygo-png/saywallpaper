@@ -34,8 +34,9 @@
     packages = eachSystem (system: pkgs: let
       niceHaskell = inputs.niceHaskell.outputs.niceHaskell.${system};
     in rec {
-      sayland = niceHaskell.mkPackage {
+      sayland = niceHaskell.mkPackageNoIFD {
         src = saylandSrc;
+        cabal2nix = "${saylandSrc}/cabal.nix";
       };
 
       saywallpaper = pkgs.callPackage ./package.nix {

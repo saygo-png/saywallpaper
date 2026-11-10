@@ -70,11 +70,11 @@
     "saylandSrc": {
       "flake": false,
       "locked": {
-        "lastModified": 1793717730,
-        "narHash": "sha256-Ye5tM/EraMPdux2kO8dW9xcV1qiVkZO6bcW1ty6ByLA=",
+        "lastModified": 1794325801,
+        "narHash": "sha256-8C6Mj13aQeUVbhALUVa0Kg4ZS/HzojEC9PIeOIYAgO0=",
         "owner": "saygo-png",
         "repo": "sayland",
-        "rev": "ffe624cf91c4d59b7ceda5a645cfbefd9483dad6",
+        "rev": "46d47411bd0d599efccf8cedebe388aa071a11d9",
         "type": "github"
       },
       "original": {
