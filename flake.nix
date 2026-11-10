@@ -35,12 +35,7 @@
       niceHaskell = inputs.niceHaskell.outputs.niceHaskell.${system};
     in rec {
       sayland = niceHaskell.mkPackage {
-        packageRoot = saylandSrc;
-        cabalName = "sayland";
-        flags = niceHaskell.mkFlags {
-          doCheck = false;
-          doHaddock = false;
-        };
+        src = saylandSrc;
       };
 
       saywallpaper = pkgs.callPackage ./package.nix {
@@ -53,28 +48,17 @@
 
     formatter = eachSystem (_system: pkgs: (treefmt-nix.lib.evalModule pkgs ./treefmt.nix).config.build.wrapper);
 
-    devShells = eachSystem (
-      system: pkgs: let
-        niceHaskell = inputs.niceHaskell.outputs.niceHaskell.${system};
-        haskellShell =
-          (pkgs.callPackage ./package.nix {
-            inherit niceHaskell;
-            inherit (self.packages.${system}) sayland;
-            shell = true;
-          }).overrideAttrs (old: {
-            nativeBuildInputs =
-              old.nativeBuildInputs
-              ++ [
-                self.formatter.${system}
-                pkgs.haskellPackages.cabal-install
-                pkgs.haskellPackages.haskell-language-server
-              ];
-            buildInputs = old.buildInputs ++ [pkgs.zlib];
-          });
-      in {
-        inherit haskellShell;
-        default = haskellShell;
-      }
-    );
+    devShells = eachSystem (system: pkgs: rec {
+      default = haskellShell;
+      haskellShell = pkgs.mkShell {
+        inputsFrom = [self.packages.${system}.saywallpaper.env];
+        packages = [
+          self.formatter.${system}
+          pkgs.haskellPackages.cabal-install
+          pkgs.haskellPackages.haskell-language-server
+        ];
+        buildInputs = [pkgs.zlib];
+      };
+    });
   };
 }
