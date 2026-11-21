@@ -32,7 +32,7 @@ common common-options
     -Wno-unticked-promoted-constructors
     -threaded
     -rtsopts
-    -with-rtsopts=-N
+    -with-rtsopts=-A256k
 
   default-extensions:
     DuplicateRecordFields

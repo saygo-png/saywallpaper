@@ -8,7 +8,7 @@ import Config
 import Control.Concurrent
 import Control.Concurrent.STM (retry, stateTVar)
 import Control.Exception
-import Data.ByteString qualified as BS
+import Data.ByteString.Lazy qualified as BSL
 import Data.Map qualified as Map
 import Data.Set qualified as Set
 import Relude
@@ -155,7 +155,8 @@ program wallpaperPath = do
           wl_buffer <- newObject wl_shm_pool $ \i -> Request_wl_shm_pool_create_buffer i 0 (c bufferWidth) (c bufferHeight) (c $ bufferWidth * colorChannels) colorFormat
 
           fileHandle <- liftIO $ fdToHandle fileDescriptor
-          liftIO $ BS.hPut fileHandle =<< BS.readFile wallpaperPath
+          liftIO $ BSL.hPut fileHandle =<< readFileLBS wallpaperPath
+          hFlush fileHandle
 
           atomically $ modifyTVar' stateVar $ \s -> s{pendingBuffer = Just wl_buffer}
 
