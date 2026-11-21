@@ -23,42 +23,45 @@
   outputs = {
     nixpkgs,
     systems,
+    niceHaskell,
     saylandSrc,
     treefmt-nix,
     self,
     ...
-  } @ inputs: let
+  }: let
     pkgsFor = nixpkgs.lib.genAttrs (import systems) (system: import nixpkgs {inherit system;});
     eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f system pkgsFor.${system});
   in {
     packages = eachSystem (system: pkgs: let
-      niceHaskell = inputs.niceHaskell.outputs.niceHaskell.${system};
-    in rec {
-      sayland = niceHaskell.mkPackageNoIFD {
-        src = saylandSrc;
-        cabal2nix = "${saylandSrc}/cabal.nix";
-      };
-
       saywallpaper = pkgs.callPackage ./package.nix {
-        inherit niceHaskell;
-        inherit sayland;
+        niceHaskell = niceHaskell.outputs.niceHaskell.${system};
+        inherit saylandSrc;
       };
-
+    in {
+      inherit saywallpaper;
       default = saywallpaper;
     });
 
     formatter = eachSystem (_system: pkgs: (treefmt-nix.lib.evalModule pkgs ./treefmt.nix).config.build.wrapper);
 
-    devShells = eachSystem (system: pkgs: rec {
-      default = haskellShell;
-      haskellShell = pkgs.mkShell {
+    devShells = eachSystem (system: pkgs: let
+      generate-cabal2nix = pkgs.writeShellApplication {
+        name = "generate-cabal2nix";
+        runtimeInputs = [pkgs.cabal2nix];
+        text = "cabal2nix . > cabal.nix";
+      };
+    in {
+      default = pkgs.mkShell {
         inputsFrom = [self.packages.${system}.saywallpaper.env];
         packages = [
           self.formatter.${system}
-          pkgs.haskellPackages.cabal-install
-          pkgs.haskellPackages.haskell-language-server
+          pkgs.cabal-install
+          pkgs.haskell-language-server
+          generate-cabal2nix
         ];
-        buildInputs = [pkgs.zlib];
+        shellHook = ''
+          echo "generate-cabal2nix regenerate cabal.nix after changing saywallpaper.cabal"
+        '';
       };
     });
   };
